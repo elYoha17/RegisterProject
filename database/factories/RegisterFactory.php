@@ -17,7 +17,7 @@ class RegisterFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'date' => $this->faker->dateTimeInInterval('-30 days', '+30 days'),
         ];
     }
 }
