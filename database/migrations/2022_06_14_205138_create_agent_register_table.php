@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Agent;
+use App\Models\Register;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,10 +15,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('registers', function (Blueprint $table) {
-            $table->id();
-            $table->date('date');
-            $table->timestamps();
+        Schema::create('agent_register', function (Blueprint $table) {
+            $table->foreignIdFor(Agent::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Register::class)->constrained()->cascadeOnDelete();
+
+            $table->primary(['agent_id', 'register_id']);
         });
     }
 
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('registers');
+        Schema::dropIfExists('agent_register');
     }
 };
