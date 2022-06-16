@@ -13,7 +13,7 @@ class StoreAgentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class StoreAgentRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'first_name' => ['required', 'string', 'max:50'],
+            'last_name' => ['required', 'string', 'max:50'],
         ];
     }
 }

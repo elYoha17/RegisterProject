@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Register;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreRegisterRequest;
 use App\Http\Requests\UpdateRegisterRequest;
+use App\Models\Agent;
+use PHPUnit\Framework\MockObject\Stub\ReturnReference;
 
 class RegisterController extends Controller
 {
@@ -15,7 +18,9 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        //
+        $registers = Register::where('user_id', Auth::id())->orderBy('date', 'desc')->withCount('agents')->get();
+        
+        return view('registers.index', compact('registers'));
     }
 
     /**
@@ -25,7 +30,7 @@ class RegisterController extends Controller
      */
     public function create()
     {
-        //
+        return view('registers.create');
     }
 
     /**
@@ -36,7 +41,12 @@ class RegisterController extends Controller
      */
     public function store(StoreRegisterRequest $request)
     {
-        //
+        $register = Register::create([
+            'user_id' => Auth::id(),
+            'date' => $request->date,
+        ]);
+
+        return redirect()->route('registers.manage', $register);
     }
 
     /**
@@ -47,7 +57,9 @@ class RegisterController extends Controller
      */
     public function show(Register $register)
     {
-        //
+        $agents = $register->agents()->orderBy('first_name')->withCount('registers')->get();
+
+        return view('registers.show', compact('register', 'agents'));
     }
 
     /**
@@ -58,7 +70,7 @@ class RegisterController extends Controller
      */
     public function edit(Register $register)
     {
-        //
+        return view('registers.edit', compact('register'));
     }
 
     /**
@@ -70,7 +82,10 @@ class RegisterController extends Controller
      */
     public function update(UpdateRegisterRequest $request, Register $register)
     {
-        //
+        $register->date = $request->date;
+        $register->save();
+
+        return redirect()->route('registers.show', compact('register'));
     }
 
     /**
@@ -81,6 +96,8 @@ class RegisterController extends Controller
      */
     public function destroy(Register $register)
     {
-        //
+        $register->delete();
+
+        return redirect()->route('registers.index');
     }
 }

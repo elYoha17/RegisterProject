@@ -4,9 +4,9 @@
             <div>
                 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Agent à modifier') }}
+                {{ __('Registre à modifier') }}
             </h2>
-            <div class="text-lg text-gray-600 font-semibold">{{ $agent->first_name . ' ' . $agent->last_name }}</div>
+            <div class="text-lg text-gray-600 font-semibold">{{ $register->date->format('d M Y') }}</div>
             </div>
         </div>
     </x-slot>
@@ -16,32 +16,26 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="max-w-1/2 mx-auto">
-                
-                        <form method="POST" action="{{ route('agents.update', $agent) }}">
+                        <div class="max-w-md">
+                        <form method="POST" action="{{ route('registers.update', $register) }}">
                             @csrf
                             @method('put')
                 
-                            <!-- First name -->
+                            <!-- Date -->
                             <div class="mb-4">
-                                <x-label for="first_name" :value="__('Prénom')" />
+                                <x-label for="date" :value="__('Date')" />
                 
-                                <x-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="$agent->first_name" required autofocus />
-                            </div>
-
-                            <!-- Last name -->
-                            <div class="mb-4">
-                                <x-label for="last_name" :value="__('Nom')" />
-                
-                                <x-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="$agent->last_name" required />
+                                <x-input id="date" class="block mt-1 w-full" type="date" name="date" :value="$register->date->format('Y-m-d')" required autofocus />
                             </div>
 
                             <div class="flex items-center justify-end mt-4">
-                                <x-link :href="route('agents.show', $agent)">Retour</x-link>
+                                <x-link :href="route('registers.show', $register)">Retour</x-link>
                                 <x-button class="ml-4">
                                     {{ __('Modifier') }}
                                 </x-button>
                             </div>
                         </form>
+                        </div>
                     </div>
                 </div>
             </div>

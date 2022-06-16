@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AgentController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\RegisterManagmentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,12 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('auth')->group(function () {
+    Route::resource('registers', RegisterController::class);
+    Route::resource('agents', AgentController::class);
+    
+    Route::get('registers/{register}/manage', [RegisterManagmentController::class, 'manage'])->name('registers.manage');
+    Route::post('registers/{register}/manage/{agent}', [RegisterManagmentController::class, 'add'])->name('registers.add');
+    Route::delete('registers/{register}/manage/{agent}', [RegisterManagmentController::class, 'remove'])->name('registers.remove');
+    
+    Route::get('registers/{register}/count', [RegisterManagmentController::class, 'count'])->name('registers.agents');
+
+    Route::redirect('/', '/registers')->name('home');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+
 
 require __DIR__.'/auth.php';

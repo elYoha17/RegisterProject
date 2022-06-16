@@ -11,6 +11,12 @@ class Agent extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'first_name',
+        'last_name',
+    ];
+
     public function registers(): BelongsToMany
     {
         return $this->belongsToMany(Register::class);

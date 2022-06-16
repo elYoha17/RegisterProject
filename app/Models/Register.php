@@ -11,8 +11,18 @@ class Register extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'date',
+    ];
+
+    protected $casts = [
+        'date' => 'date',
+    ];
+
     public function agents(): BelongsToMany
     {
         return $this->belongsToMany(Agent::class);
     }
+
 }

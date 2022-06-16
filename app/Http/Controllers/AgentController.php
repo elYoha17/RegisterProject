@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Agent;
 use App\Http\Requests\StoreAgentRequest;
 use App\Http\Requests\UpdateAgentRequest;
+use App\Models\Register;
+use Illuminate\Support\Facades\Auth;
 
 class AgentController extends Controller
 {
@@ -15,7 +17,10 @@ class AgentController extends Controller
      */
     public function index()
     {
-        //
+        $agents = Agent::where('user_id', Auth::id())
+            ->withCount('registers')->orderBy('first_name')->orderBy('last_name')->get();
+
+        return view('agents.index', compact('agents'));
     }
 
     /**
@@ -25,7 +30,7 @@ class AgentController extends Controller
      */
     public function create()
     {
-        //
+        return view('agents.create');
     }
 
     /**
@@ -36,7 +41,13 @@ class AgentController extends Controller
      */
     public function store(StoreAgentRequest $request)
     {
-        //
+        $agent = Agent::create([
+            'user_id' => Auth::id(),
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+        ]);
+
+        return redirect()->route('agents.index');
     }
 
     /**
@@ -47,7 +58,9 @@ class AgentController extends Controller
      */
     public function show(Agent $agent)
     {
-        //
+        $registers = $agent->registers()->orderBy('date', 'desc')->withCount('agents')->get();
+
+        return view('agents.show', compact('agent', 'registers'));
     }
 
     /**
@@ -58,7 +71,7 @@ class AgentController extends Controller
      */
     public function edit(Agent $agent)
     {
-        //
+        return view('agents.edit', compact('agent'));
     }
 
     /**
@@ -70,7 +83,11 @@ class AgentController extends Controller
      */
     public function update(UpdateAgentRequest $request, Agent $agent)
     {
-        //
+        $agent->first_name = $request->first_name;
+        $agent->last_name = $request->last_name;
+        $agent->save();
+
+        return redirect()->route('agents.show', compact('agent'));
     }
 
     /**
@@ -81,6 +98,8 @@ class AgentController extends Controller
      */
     public function destroy(Agent $agent)
     {
-        //
+        $agent->delete();
+
+        return redirect()->route('agents.index');
     }
 }

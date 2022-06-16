@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Agent;
 use App\Models\Register;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,30 +18,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(10)->create()->each(function ($user) {
-            $agents_count = rand(0, 20);
-            $agents = Agent::factory($agents_count)->create([
-                'user_id' => $user->id,
-            ]);
+        $user = User::factory()->create([
+            'name' => 'Test',
+            'email' => 'test@exemple.test',
+        ]);
 
-            $registers_count = rand(0, 20);
-            $registers = Register::factory($registers_count)->create([
-                'user_id' => $user->id,
-            ]);
+        $population = 50;
 
-            foreach ($registers as $register)
-            {
-                $rand = rand(1, $agents_count);
-                $agents = $agents->random($rand);
+        $agents = Agent::factory()->count($population)->create([
+            'user_id' => $user->id
+        ]);
+        $registers = Register::factory()->count(100)->create([
+            'user_id' => $user->id
+        ]);
 
-                foreach ($agents as $agent) {
+        foreach ($registers as $register) {
+            $rand_list = $agents->random(rand(0, $population));
+
+            foreach ($rand_list as $agent) {
                     DB::table('agent_register')
                         ->insert([
                             'agent_id' => $agent->id,
                             'register_id' => $register->id,
                         ]);
-                }
-            };
-        });
+            }
+        }
     }
 }
