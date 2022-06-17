@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agent;
-use App\Http\Requests\StoreAgentRequest;
-use App\Http\Requests\UpdateAgentRequest;
 use App\Models\Register;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use App\Http\Requests\StoreAgentRequest;
+use App\Http\Requests\UpdateAgentRequest;
 
 class AgentController extends Controller
 {
@@ -47,7 +48,9 @@ class AgentController extends Controller
             'last_name' => $request->last_name,
         ]);
 
-        return redirect()->route('agents.index');
+        Session::flash('success', "{$agent->first_name} {$agent->last_name} a été créé avec success");
+
+        return redirect()->route('agents.create');
     }
 
     /**

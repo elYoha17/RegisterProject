@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreAgentRequest extends FormRequest
@@ -24,7 +26,12 @@ class StoreAgentRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'string', 'max:50'],
+            'first_name' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique('agents')->where(fn ($query) => $query->where('user_id', Auth::id())->where('last_name', request()->last_name)),
+            ],
             'last_name' => ['required', 'string', 'max:50'],
         ];
     }

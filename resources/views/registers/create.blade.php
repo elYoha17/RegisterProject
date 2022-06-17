@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <div>
-                
+
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Nouveau registre') }}
             </h2>
@@ -17,12 +17,15 @@
                         <div class="max-w-md">
                         <form method="POST" action="{{ route('registers.store') }}">
                             @csrf
-                
+
                             <!-- Date -->
                             <div class="mb-4">
                                 <x-label for="date" :value="__('Date')" />
-                
+
                                 <x-input id="date" class="block mt-1 w-full" type="date" name="date" :value="now()->format('Y-m-d')" required autofocus />
+                                @error('date')
+                                    <div class="text-red-500">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="flex items-center justify-end mt-4">
@@ -40,5 +43,5 @@
     </div>
 </x-app-layout>
 <x-guest-layout>
-    
+
 </x-guest-layout>
