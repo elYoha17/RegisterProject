@@ -4,9 +4,9 @@
             <div>
                 
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Agent à modifier') }}
+                {{ __('Un agent à modifier') }}
             </h2>
-            <div class="text-lg text-gray-600 font-semibold">{{ $agent->first_name . ' ' . $agent->last_name }}</div>
+            <div class="text-lg text-gray-600 font-semibold">{{ $agent->full_name }}</div>
             </div>
         </div>
     </x-slot>

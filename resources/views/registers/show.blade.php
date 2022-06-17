@@ -5,7 +5,7 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     {{ __('Un registre') }}
                 </h2>
-                <div class="text-lg text-gray-600 font-semibold">{{ $register->date->format('d M Y') }}</div>    
+                <div class="text-lg text-gray-600 font-semibold">{{ $register->title }}</div>    
             </div>
             <div class="flex gap-4 items-center">
                 <x-link-button :href="route('registers.manage', $register)">Gérer</x-link-button>

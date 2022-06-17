@@ -57,6 +57,9 @@ class RegisterController extends Controller
      */
     public function show(Register $register)
     {
+        if(request()->user()->cannot('view', $register))
+            abort(403);
+
         $agents = $register->agents()->orderBy('first_name')->withCount('registers')->get();
 
         return view('registers.show', compact('register', 'agents'));
@@ -70,6 +73,9 @@ class RegisterController extends Controller
      */
     public function edit(Register $register)
     {
+        if(request()->user()->cannot('view', $register))
+            abort(403);
+
         return view('registers.edit', compact('register'));
     }
 
@@ -82,6 +88,9 @@ class RegisterController extends Controller
      */
     public function update(UpdateRegisterRequest $request, Register $register)
     {
+        if(request()->user()->cannot('update', $register))
+            abort(403);
+
         $register->date = $request->date;
         $register->save();
 
@@ -96,6 +105,9 @@ class RegisterController extends Controller
      */
     public function destroy(Register $register)
     {
+        if(request()->user()->cannot('delete', $register))
+            abort(403);
+        
         $register->delete();
 
         return redirect()->route('registers.index');

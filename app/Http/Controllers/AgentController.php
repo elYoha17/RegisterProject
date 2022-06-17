@@ -41,7 +41,7 @@ class AgentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreAgentRequest $request)
-    {
+    {   
         $agent = Agent::create([
             'user_id' => Auth::id(),
             'first_name' => $request->first_name,
@@ -61,6 +61,9 @@ class AgentController extends Controller
      */
     public function show(Agent $agent)
     {
+        if(request()->user()->cannot('view', $agent))
+            abort(403);
+        
         $registers = $agent->registers()->orderBy('date', 'desc')->withCount('agents')->get();
 
         return view('agents.show', compact('agent', 'registers'));
@@ -74,6 +77,9 @@ class AgentController extends Controller
      */
     public function edit(Agent $agent)
     {
+        if(request()->user()->cannot('view', $agent))
+            abort(403);
+            
         return view('agents.edit', compact('agent'));
     }
 
@@ -86,6 +92,9 @@ class AgentController extends Controller
      */
     public function update(UpdateAgentRequest $request, Agent $agent)
     {
+        if(request()->user()->cannot('update', $agent))
+            abort(403);
+
         $agent->first_name = $request->first_name;
         $agent->last_name = $request->last_name;
         $agent->save();
@@ -101,6 +110,9 @@ class AgentController extends Controller
      */
     public function destroy(Agent $agent)
     {
+        if(request()->user()->cannot('delete', $agent))
+            abort(403);
+
         $agent->delete();
 
         return redirect()->route('agents.index');

@@ -17,6 +17,11 @@ class Agent extends Model
         'last_name',
     ];
 
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
     public function registers(): BelongsToMany
     {
         return $this->belongsToMany(Register::class);

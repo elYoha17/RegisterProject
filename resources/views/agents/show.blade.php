@@ -5,7 +5,7 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     {{ __('Un agent') }}
                 </h2>
-                <div class="text-lg text-gray-600 font-semibold">{{ $agent->first_name . ' ' . $agent->last_name }}</div>    
+                <div class="text-lg text-gray-600 font-semibold">{{ $agent->full_name }}</div>    
             </div>
             <div class="flex gap-4">
                 <x-link :href="route('agents.edit', $agent)">Modifier</x-link>

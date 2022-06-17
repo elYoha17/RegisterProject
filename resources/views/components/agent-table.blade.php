@@ -11,7 +11,7 @@
         @isset($agents)
             @foreach ($agents as $agent)
                 <tr class="h-10">
-                    <td class="px-4 font-semibold border border-slate-300">{{ $agent->first_name . ' ' . $agent->last_name }}</td>
+                    <td class="px-4 font-semibold border border-slate-300">{{ $agent->full_name}}</td>
                     <td class="text-center px-4 border border-slate-300">{{ $agent->registers_count }}</td>
                     <td class="text-center px-4 border border-slate-300">
                         <x-link :href="route('agents.show', $agent)">Afficher</x-link>

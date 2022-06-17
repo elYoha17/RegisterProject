@@ -30,7 +30,7 @@ class RegisterPolicy
      */
     public function view(User $user, Register $register)
     {
-        //
+        return $user->id === $register->user_id;
     }
 
     /**
@@ -53,7 +53,7 @@ class RegisterPolicy
      */
     public function update(User $user, Register $register)
     {
-        //
+        return $user->id === $register->user_id;
     }
 
     /**
@@ -65,7 +65,7 @@ class RegisterPolicy
      */
     public function delete(User $user, Register $register)
     {
-        //
+        return $user->id === $register->user_id;
     }
 
     /**

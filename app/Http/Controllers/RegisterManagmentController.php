@@ -13,6 +13,9 @@ class RegisterManagmentController extends Controller
 {
     public function manage(Register $register)
     {
+        if(request()->user()->cannot('view', $register))
+            abort(403);
+
         $presents = $register->agents()->get();
         $agents = Agent::where('user_id', $register->user_id)->orderBy('first_name')->get();
 
@@ -21,6 +24,9 @@ class RegisterManagmentController extends Controller
 
     public function add(Register $register, Agent $agent)
     {
+        if(request()->user()->cannot('update', $register))
+            abort(403);
+
         DB::table('agent_register')->insert([
             'agent_id' => $agent->id,
             'register_id' => $register->id,
@@ -31,6 +37,9 @@ class RegisterManagmentController extends Controller
     
     public function remove(Register $register, Agent $agent)
     {
+        if(request()->user()->cannot('update', $register))
+            abort(403);
+
         DB::table('agent_register')->where([
             'agent_id' => $agent->id,
             'register_id' => $register->id,

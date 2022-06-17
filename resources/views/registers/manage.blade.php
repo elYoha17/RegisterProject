@@ -3,9 +3,9 @@
         <div class="flex justify-between items-center">
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ __('Gérer un registre') }}
+                    {{ __('Un registre à gérer') }}
                 </h2>
-                <div class="text-lg text-gray-600 font-semibold">{{ $register->date->format('d M Y') }}</div>    
+                <div class="text-lg text-gray-600 font-semibold">{{ $register->title }}</div>    
             </div>
             <div class="flex gap-4 items-center">
                 <x-link-button :href="route('registers.show', $register)">Afficher</x-link-button>
